@@ -1,0 +1,83 @@
+port: 8080
+base_url: http://localhost:8080
+allowed_origins: "*"                    # CORS allowed origins (optional, defaults to *)
+webhook_secret: "whsec_test_secret"     # Default signing secret for webhooks
+
+# Native Payment API configuration (optional, defaults shown)
+native_api:
+  enabled: true                         # Enable /payments/... endpoints
+
+# Stripe-Compatible API configuration (optional, defaults shown)
+stripe_api:
+  enabled: true                         # Enable /v1/... endpoints
+
+# Pre-configured Payment Links (optional)
+payment_links:
+  - id: "plink_pro_plan"
+    title: "Pro Plan Subscription"
+    description: "Monthly subscription to Pro Plan"
+    amount: 2999                        # $29.99 in cents
+    currency: "usd"
+    active: true
+    callback_url: "http://localhost:3000/payment/callback"
+    success_url: "http://localhost:3000/payment/success"
+    cancel_url: "http://localhost:3000/payment/cancel"
+    webhook_url: "http://localhost:3000/webhooks/payment"
+    metadata:
+      plan: "pro"
+
+  - id: "plink_starter_pack"
+    title: "Starter Pack"
+    description: "One-time starter pack purchase"
+    amount: 1500                        # $15.00 in cents
+    currency: "usd"
+    active: true
+    callback_url: "http://localhost:3000/payment/callback"
+    metadata:
+      plan: "starter"
+
+# Pre-configured Customers (optional)
+customers:
+  - id: "cus_default_1"
+    email: "alice@example.com"
+    name: "Alice Smith"
+    metadata:
+      tier: "gold"
+  - id: "cus_default_2"
+    email: "bob@example.com"
+    name: "Bob Johnson"
+    metadata:
+      tier: "standard"
+
+# Pre-configured Webhook Endpoints (optional)
+webhooks:
+  - id: "wh_default_1"
+    url: "http://localhost:3000/webhooks/stripe"
+    secret: "whsec_test_secret"
+    events:
+      - "*"
+
+# Testing & simulation rules (optional, can also be updated at runtime via PUT /_testing/config)
+testing:
+  delay_ms: 0
+  webhook_delay_ms: 0
+  always_fail: false
+  always_fail_code: "processing_error"
+  always_fail_message: "Payment processing failed due to test configuration"
+  declined_cards:
+    "4000000000000002":
+      code: "card_declined"
+      decline_code: "generic_decline"
+      message: "Your card was declined."
+    "4000000000009995":
+      code: "card_declined"
+      decline_code: "insufficient_funds"
+      message: "Your card has insufficient funds."
+    "4000000000000069":
+      code: "expired_card"
+      decline_code: "expired_card"
+      message: "Your card has expired."
+    "4000000000000119":
+      code: "processing_error"
+      decline_code: "processing_error"
+      message: "An error occurred while processing your card."

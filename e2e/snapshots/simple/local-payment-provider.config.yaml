@@ -1,0 +1,68 @@
+port: 8080
+base_url: http://localhost:8080
+allowed_origins: "*"
+webhook_secret: "whsec_test_secret"
+
+native_api:
+  enabled: true
+
+stripe_api:
+  enabled: true
+
+payment_links:
+  - id: "plink_pro_plan"
+    title: "Pro Plan Subscription"
+    description: "Monthly subscription to Pro Plan"
+    amount: 2999
+    currency: "usd"
+    active: true
+    callback_url: "http://localhost:3000/payment/callback"
+    success_url: "http://localhost:3000/payment/success"
+    cancel_url: "http://localhost:3000/payment/cancel"
+    webhook_url: "http://host.docker.internal:8099/webhooks/payment"
+    metadata:
+      plan: "pro"
+  - id: "plink_inactive"
+    title: "Inactive Plan"
+    description: "Legacy plan no longer available"
+    amount: 999
+    currency: "usd"
+    active: false
+
+customers:
+  - id: "cus_default_1"
+    email: "alice@example.com"
+    name: "Alice Smith"
+    metadata:
+      tier: "gold"
+
+webhooks:
+  - id: "wh_default_1"
+    url: "http://host.docker.internal:8099/webhooks/stripe"
+    secret: "whsec_test_secret"
+    events:
+      - "*"
+
+testing:
+  delay_ms: 0
+  webhook_delay_ms: 0
+  always_fail: false
+  always_fail_code: "processing_error"
+  always_fail_message: "Payment processing failed due to test configuration"
+  declined_cards:
+    "4000000000000002":
+      code: "card_declined"
+      decline_code: "generic_decline"
+      message: "Your card was declined."
+    "4000000000009995":
+      code: "card_declined"
+      decline_code: "insufficient_funds"
+      message: "Your card has insufficient funds."
+    "4000000000000069":
+      code: "expired_card"
+      decline_code: "expired_card"
+      message: "Your card has expired."
+    "4000000000000119":
+      code: "processing_error"
+      decline_code: "processing_error"
+      message: "An error occurred while processing your card."

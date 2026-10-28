@@ -1,0 +1,7 @@
+services:
+  local-payment-provider:
+    image: siocode/local-payment-provider:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./local-payment-provider.config.yaml:/config.yaml:ro

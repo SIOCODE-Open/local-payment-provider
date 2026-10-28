@@ -1,0 +1,21 @@
+port: 8080
+base_url: http://localhost:8082
+allowed_origins: "*"
+webhook_secret: "whsec_test_secret"
+
+native_api:
+  enabled: true
+
+stripe_api:
+  enabled: false
+
+payment_links:
+  - id: "plink_pro_plan"
+    title: "Pro Plan Subscription"
+    description: "Monthly subscription to Pro Plan"
+    amount: 2999
+    currency: "usd"
+    active: true
+    callback_url: "http://localhost:3000/payment/callback"
+    success_url: "http://localhost:3000/payment/success"
+    cancel_url: "http://localhost:3000/payment/cancel"

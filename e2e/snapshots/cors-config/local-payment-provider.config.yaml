@@ -1,0 +1,23 @@
+port: 8080
+base_url: http://localhost:8084
+allowed_origins: "http://localhost:3000,http://example.com"
+webhook_secret: "whsec_test_secret"
+
+native_api:
+  enabled: true
+
+stripe_api:
+  enabled: true
+
+payment_links:
+  - id: "plink_pro_plan"
+    title: "Pro Plan Subscription"
+    description: "Monthly subscription to Pro Plan"
+    amount: 2999
+    currency: "usd"
+    active: true
+
+customers:
+  - id: "cus_default_1"
+    email: "alice@example.com"
+    name: "Alice Smith"

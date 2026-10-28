@@ -1,0 +1,6 @@
+*.exe
+local-payment-provider
+example/
+e2e/
+.vscode/
+*.md
